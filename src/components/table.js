@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const UserTable = () => {
-  const [userData, setUserData] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -9,9 +9,11 @@ const UserTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/users/1/fetch_data'); // Replace 1 with the appropriate user ID
+    //   const response = await fetch('/users/fetch_all_data');
+      const response = await fetch('http://127.0.0.1:3000/users/fetch_all_data');
+
       const data = await response.json();
-      setUserData(data);
+      setUsers(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -22,16 +24,19 @@ const UserTable = () => {
       <thead>
         <tr>
           <th>Name</th>
+          <br></br>
           <th>ID</th>
           <th>Phone Number</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>{userData.name}</td>
-          <td>{userData.id_number}</td>
-          <td>{userData.phone_number}</td>
-        </tr>
+        {users.map((user) => (
+          <tr key={user.id}>
+            <td>{user.name}</td>
+            <td>{user.id_number}</td>
+            <td>{user.phone_number}</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
